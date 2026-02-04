@@ -27,6 +27,14 @@
             font-weight: 900;
         }
 
+        .mad-emoji { 
+            position: absolute; 
+            pointer-events: none; 
+            z-index: 999; 
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+            line-height: 1;
+        }
+
         @keyframes shake {
             0% { transform: translate(1px, 1px) rotate(0deg); }
             25% { transform: translate(-3px, -2px) rotate(-1deg); }
@@ -47,12 +55,18 @@
             width: 85%;
             z-index: 100;
             border: 2px solid rgba(255, 255, 255, 0.5);
-            position: relative; /* Essential for absolute positioning of credit */
+            position: relative;
             min-height: 300px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         h1 { 
@@ -70,7 +84,11 @@
             line-height: 1.5;
         }
 
-        /* --- LEFT-ALIGNED CREDIT --- */
+        #page3 p {
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+
         .credit {
             position: absolute;
             bottom: 20px;
@@ -82,8 +100,37 @@
             pointer-events: none;
         }
 
-        #presentImg { cursor: pointer; transition: transform 0.3s ease; margin-bottom: 10px; }
+        /* --- PRESENT OPENING ANIMATION --- */
+        #presentImg { 
+            cursor: pointer; 
+            transition: transform 0.3s ease; 
+            margin-bottom: 10px; 
+            z-index: 102; 
+        }
+        
         #presentImg:hover { transform: scale(1.1) rotate(5deg); }
+
+        .opening-effect {
+            animation: giftOpen 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes giftOpen {
+            0% { transform: scale(1); }
+            30% { transform: scale(1.2) rotate(-15deg); }
+            60% { transform: scale(1.4) rotate(15deg); }
+            100% { transform: scale(5); opacity: 0; filter: blur(20px); }
+        }
+
+        /* --- CAT PETTING STYLES --- */
+        #catGif {
+            cursor: pointer;
+            transition: transform 0.1s ease;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+        #catGif:active {
+            transform: scale(0.9);
+        }
 
         .hidden { display: none !important; }
 
@@ -105,7 +152,19 @@
             transition: all 0.2s ease;
         }
 
-        #yesBtn { background-color: #ff4d6d; color: white; box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4); }
+        /* --- YES BUTTON UPDATED --- */
+        #yesBtn { 
+            background-color: #ff4d6d; 
+            color: white; 
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4); 
+        }
+        
+        #yesBtn:hover { 
+            background-color: #ff85a1; /* Lighter pink on hover */
+            box-shadow: 0 6px 20px rgba(255, 133, 161, 0.6);
+            transform: scale(1.05);
+        }
+
         #noBtn { background-color: #eee; color: #777; }
 
         #countdown {
@@ -131,10 +190,11 @@
         }
 
         /* --- PARTICLES --- */
-        .heart-icon, .mad-emoji, .white-sparkle, .party-popper { 
+        .heart-icon, .white-sparkle, .party-popper, .pet-heart { 
             position: absolute; 
             pointer-events: none; 
-            z-index: 1; 
+            z-index: 101; 
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
         }
 
         @keyframes floatUp {
@@ -147,20 +207,25 @@
             0% { transform: translate(0, 0) scale(1); opacity: 1; }
             100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
         }
+
+        @keyframes petHeartFloat {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+            100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.5); opacity: 0; }
+        }
     </style>
 </head>
 <body>
 
     <div class="container" id="page1">
         <img id="presentImg" src="https://cdn-icons-png.flaticon.com/512/6663/6663339.png" width="180">
-        <h1>Hi my love!</h1>
+        <h1>Hi Bobaa!</h1>
         <p>I have a little surprise for you.<br>Can you open this present?</p>
         <div class="credit">Made by Risje</div>
     </div>
 
     <div class="container hidden" id="page2">
         <img src="https://i.pinimg.com/originals/a1/b3/b1/a1b3b1492a379333ea53b0f795eaf86f.gif" width="150">
-        <h1 id="questionText">Do you want to be my valentine?</h1>
+        <h1 id="questionText">Do you want to be my valentine my love?</h1>
         <div class="buttons-wrapper">
             <button id="yesBtn">Yes</button>
             <button id="noBtn">No</button>
@@ -169,8 +234,9 @@
     </div>
 
     <div class="container hidden" id="page3">
-        <img src="https://i.pinimg.com/originals/88/14/9b/88149b0400750578f4d07d9bc3fb0fee.gif" width="180">
+        <img id="catGif" src="https://mofusand-images.sugotoku-futurize.com/uncontracted/enjoy-same%402x.gif" width="180">
         <h1>Yayyy!!! ❤️</h1>
+        <p>I love youuu</p>
         <p>I can't wait for our weekend away. See you soon!</p>
         <div id="countdown"></div>
         <br>
@@ -181,6 +247,8 @@
     <script>
         const noBtn = document.getElementById('noBtn');
         const yesBtn = document.getElementById('yesBtn');
+        const presentImg = document.getElementById('presentImg');
+        const catGif = document.getElementById('catGif');
         const body = document.body;
         let celebrationIntervals = [];
         let heartIntervals = []; 
@@ -201,11 +269,13 @@
             clearAllIntervals();
             body.classList.remove('mad-mode');
 
-            document.getElementById('page' + pageNumber).classList.remove('hidden');
+            const nextPage = document.getElementById('page' + pageNumber);
+            nextPage.classList.remove('hidden');
             
             if (pageNumber === 2) {
-                heartIntervals.push(setInterval(() => createHeart('rgba(255,77,109,0.7)'), 200));
-                heartIntervals.push(setInterval(() => createHeart('rgba(255,179,193,0.6)'), 400));
+                heartIntervals.push(setInterval(() => createHeart('#ff4d6d'), 150)); 
+                heartIntervals.push(setInterval(() => createHeart('#ff0033'), 400)); 
+                heartIntervals.push(setInterval(() => createHeart('#ffffff'), 600)); 
             }
             if (pageNumber === 3) {
                 startCountdown();
@@ -215,13 +285,39 @@
         function createHeart(color, isCelebration = false) {
             const heart = document.createElement('div');
             heart.className = 'heart-icon';
-            heart.innerHTML = ['❤️', '💖', '💝', '💕','🌸'][Math.floor(Math.random() * 4)];
-            heart.style.cssText = `left: ${Math.random() * 100}vw; color: ${color};`;
+            heart.innerHTML = ['❤️', '💖', '💝', '💕','🌸'][Math.floor(Math.random() * 5)];
+            
+            heart.style.cssText = `
+                left: ${Math.random() * 100}vw; 
+                color: ${color}; 
+                filter: drop-shadow(0 0 5px ${isCelebration ? 'white' : 'rgba(255,255,255,0.8)'});
+            `;
+            
             heart.style.fontSize = (Math.random() * (isCelebration ? 45 : 30) + 20) + 'px';
             const d = (Math.random() * 3 + 2);
             heart.style.animation = `floatUp ${d}s linear forwards`;
             document.body.appendChild(heart);
             setTimeout(() => heart.remove(), d * 1000);
+        }
+
+        function createPetHearts(x, y) {
+            for (let i = 0; i < 6; i++) {
+                const h = document.createElement('div');
+                h.className = 'pet-heart';
+                h.innerHTML = ['❤️', '💖', '💕', '✨'][Math.floor(Math.random() * 4)];
+                h.style.left = x + 'px';
+                h.style.top = y + 'px';
+                h.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                
+                const dx = (Math.random() - 0.5) * 200 + 'px';
+                const dy = (Math.random() * -150 - 50) + 'px';
+                h.style.setProperty('--dx', dx);
+                h.style.setProperty('--dy', dy);
+                
+                h.style.animation = `petHeartFloat 0.8s ease-out forwards`;
+                document.body.appendChild(h);
+                setTimeout(() => h.remove(), 800);
+            }
         }
 
         function createBurst() {
@@ -259,23 +355,45 @@
             countdownInterval = setInterval(updateTimer, 1000);
         }
 
+        document.addEventListener('click', (e) => {
+            const page1 = document.getElementById('page1');
+            if (!page1.classList.contains('hidden')) {
+                createPetHearts(e.clientX, e.clientY);
+            }
+        });
+
+        presentImg.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            presentImg.classList.add('opening-effect');
+            setTimeout(() => {
+                showPage(2);
+                presentImg.classList.remove('opening-effect');
+            }, 700);
+        });
+
+        catGif.addEventListener('click', (e) => {
+            createPetHearts(e.clientX, e.clientY);
+        });
+
         noBtn.addEventListener('mouseover', () => {
             heartIntervals.forEach(clearInterval);
             document.querySelectorAll('.heart-icon').forEach(h => h.remove());
             noBtn.innerHTML = "😡";
+            body.classList.remove('mad-mode'); // Clear if somehow stuck
             body.classList.add('mad-mode');
-            yesBtn.style.transform = "scale(1.6)";
+            yesBtn.style.transform = "scale(1.8)";
             
             madModeInterval = setInterval(() => {
                 const e = document.createElement('div');
                 e.className = 'mad-emoji';
-                e.innerHTML = ['😡', '😭'][Math.floor(Math.random() * 2)];
+                e.innerHTML = ['😡', '😭', '😤'][Math.floor(Math.random() * 3)];
                 e.style.left = Math.random() * 100 + 'vw';
-                const duration = (Math.random() * 2 + 1);
-                e.style.animation = `floatUp ${duration}s linear forwards`;
+                e.style.fontSize = (Math.random() * 60 + 60) + 'px';
+                const duration = (Math.random() * 1.5 + 0.5);
+                e.style.animation = `floatUp ${duration}s ease-in forwards`;
                 document.body.appendChild(e);
                 setTimeout(() => e.remove(), duration * 1000);
-            }, 100);
+            }, 80); 
         });
 
         noBtn.addEventListener('mouseleave', () => {
@@ -283,10 +401,9 @@
             body.classList.remove('mad-mode');
             yesBtn.style.transform = "scale(1)";
             clearInterval(madModeInterval);
-            heartIntervals.push(setInterval(() => createHeart('rgba(255,77,109,0.7)'), 200));
+            heartIntervals.push(setInterval(() => createHeart('#ff4d6d'), 150));
+            heartIntervals.push(setInterval(() => createHeart('#ff0033'), 400));
         });
-
-        document.getElementById('presentImg').addEventListener('click', () => showPage(2));
         
         yesBtn.addEventListener('click', () => {
             showPage(3);
