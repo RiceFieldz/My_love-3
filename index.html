@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For You ❤️</title>
+    <title>For My Love ❤️</title>
     <style>
         :root {
             --primary-pink: #ff4d6d;
@@ -20,95 +20,87 @@
             justify-content: center;
             height: 100vh;
             background: linear-gradient(135deg, #ffe5ec 0%, #ffb3c1 100%);
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             overflow: hidden;
             text-align: center;
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.4);
-            padding: 2rem;
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 2.5rem;
+            border-radius: 30px;
             backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
             z-index: 10;
+            max-width: 90%;
         }
 
         h1 {
             color: var(--dark-pink);
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
         }
 
-        .gif-container img {
-            border-radius: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        p {
+            color: #555;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
         }
 
         .buttons {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 30px;
-            height: 100px; /* Space for the button to move within */
+            gap: 20px;
+            height: 80px;
         }
 
         button {
-            padding: 15px 35px;
-            font-size: 1.2rem;
+            padding: 12px 30px;
+            font-size: 1.1rem;
             font-weight: bold;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
         }
 
         #yesBtn {
             background-color: var(--primary-pink);
             color: white;
-        }
-
-        #yesBtn:hover {
-            transform: scale(1.1);
-            background-color: var(--dark-pink);
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
         }
 
         #noBtn {
             background-color: #ffffff;
-            color: #555;
-            position: absolute; /* Crucial for the runaway effect */
-            z-index: 999;
+            color: #777;
+            position: fixed; /* Allows it to move anywhere freely */
+            transition: all 0.2s ease-out;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
-        /* Floating background hearts */
         .heart {
             position: absolute;
-            color: rgba(255, 77, 109, 0.3);
-            font-size: 20px;
-            user-select: none;
+            color: rgba(255, 77, 109, 0.4);
             pointer-events: none;
-            animation: float 5s linear infinite;
+            animation: float 4s linear infinite;
         }
 
         @keyframes float {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+            0% { transform: translateY(110vh); opacity: 1; }
+            100% { transform: translateY(-10vh); opacity: 0; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="gif-container">
-            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueGZ3eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/c76IJbxB6cGXq6vDMT/giphy.gif" alt="Cute Valentine" width="220">
-        </div>
-        <h1 id="question">Will you be my Valentine? ❤️</h1>
+    <div class="container" id="mainContainer">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueGZ3eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/c76IJbxB6cGXq6vDMT/giphy.gif" alt="Cute" width="180">
+        <h1>Hi my lovee</h1>
+        <p>Do you want to be my valentine ?</p>
+        
         <div class="buttons">
-            <button id="yesBtn">YES!</button>
+            <button id="yesBtn">Yes !!</button>
             <button id="noBtn">No</button>
         </div>
     </div>
@@ -116,26 +108,41 @@
     <script>
         const noBtn = document.getElementById('noBtn');
         const yesBtn = document.getElementById('yesBtn');
-        const question = document.getElementById('question');
+        const container = document.getElementById('mainContainer');
 
-        // Function to move the button to a random spot
-        const moveButton = () => {
-            // Calculate random positions, leaving a 100px buffer from edges
-            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 100) + 50;
-            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 100) + 50;
+        // Initial position for the No button
+        let noX = window.innerWidth / 2 + 50;
+        let noY = window.innerHeight / 2 + 35;
+        noBtn.style.left = noX + 'px';
+        noBtn.style.top = noY + 'px';
+
+        document.addEventListener('mousemove', (e) => {
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
             
-            noBtn.style.left = `${x}px`;
-            noBtn.style.top = `${y}px`;
-        };
+            const btnRect = noBtn.getBoundingClientRect();
+            const btnCenterX = btnRect.left + btnRect.width / 2;
+            const btnCenterY = btnRect.top + btnRect.height / 2;
 
-        // Trigger on mouse hover OR touch (for mobile)
-        noBtn.addEventListener('mouseover', moveButton);
-        noBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault(); // Prevents clicking on mobile
-            moveButton();
+            const dist = Math.hypot(mouseX - btnCenterX, mouseY - btnCenterY);
+
+            // If the mouse gets within 100 pixels, push the button away
+            if (dist < 100) {
+                const angle = Math.atan2(btnCenterY - mouseY, btnCenterX - mouseX);
+                const pushDist = 150; // How far it "scares" away
+                
+                let newX = btnCenterX + Math.cos(angle) * pushDist;
+                let newY = btnCenterY + Math.sin(angle) * pushDist;
+
+                // Keep within screen bounds
+                newX = Math.max(50, Math.min(window.innerWidth - 100, newX));
+                newY = Math.max(50, Math.min(window.innerHeight - 50, newY));
+
+                noBtn.style.left = `${newX}px`;
+                noBtn.style.top = `${newY}px`;
+            }
         });
 
-        // Click event for "Yes"
         yesBtn.addEventListener('click', () => {
-            document.querySelector('.container').innerHTML = `
+            container.innerHTML = `
                 <img src="
