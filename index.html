@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Question</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #ffebee;
+            text-align: center;
+        }
+        h1 { color: #d32f2f; font-size: 3rem; }
+        .gif-container { margin-bottom: 20px; }
+        .buttons { display: flex; gap: 20px; position: relative; }
+        button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        #yesBtn { background-color: #4caf50; color: white; }
+        #noBtn { background-color: #f44336; color: white; position: absolute; left: 120px; }
+    </style>
+</head>
+<body>
+
+    <div class="gif-container">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueGZ3eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/c76IJbxB6cGXq6vDMT/giphy.gif" alt="Cute Cat" width="250">
+    </div>
+
+    <h1 id="question">Will you be my Valentine? ❤️</h1>
+
+    <div class="buttons">
+        <button id="yesBtn">Yes!</button>
+        <button id="noBtn">No</button>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const question = document.getElementById('question');
+
+        // Make the "No" button run away
+        noBtn.addEventListener('mouseover', () => {
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            noBtn.style.left = `${x}px`;
+            noBtn.style.top = `${y}px`;
+        });
+
+        // What happens when she clicks "Yes"
+        yesBtn.addEventListener('click', () => {
+            question.innerHTML = "Yay! See you on the 14th! 😘";
+            noBtn.style.display = 'none';
+            yesBtn.style.transform = "scale(1.5)";
+        });
+    </script>
+</body>
+</html>
