@@ -47,7 +47,12 @@
             width: 85%;
             z-index: 100;
             border: 2px solid rgba(255, 255, 255, 0.5);
-            position: relative;
+            position: relative; /* Essential for absolute positioning of credit */
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         h1 { 
@@ -63,6 +68,18 @@
             color: #555; 
             margin-bottom: 25px; 
             line-height: 1.5;
+        }
+
+        /* --- LEFT-ALIGNED CREDIT --- */
+        .credit {
+            position: absolute;
+            bottom: 20px;
+            left: 25px;
+            font-size: 0.7rem;
+            color: #bbbbbb;
+            margin: 0;
+            font-style: italic;
+            pointer-events: none;
         }
 
         #presentImg { cursor: pointer; transition: transform 0.3s ease; margin-bottom: 10px; }
@@ -92,7 +109,7 @@
         #noBtn { background-color: #eee; color: #777; }
 
         #countdown {
-            margin-top: 20px;
+            margin-top: 10px;
             font-weight: bold;
             color: #d32f2f;
             font-size: 1.1rem;
@@ -104,7 +121,7 @@
         }
 
         .back-btn {
-            margin-top: 30px;
+            margin-top: 15px;
             background: none;
             color: #bbb;
             font-size: 0.8rem;
@@ -138,6 +155,7 @@
         <img id="presentImg" src="https://cdn-icons-png.flaticon.com/512/6663/6663339.png" width="180">
         <h1>Hi my love!</h1>
         <p>I have a little surprise for you.<br>Can you open this present?</p>
+        <div class="credit">Made by Risje</div>
     </div>
 
     <div class="container hidden" id="page2">
@@ -157,6 +175,7 @@
         <div id="countdown"></div>
         <br>
         <button class="back-btn" onclick="showPage(2)">Back</button>
+        <div class="credit">Made by Risje</div>
     </div>
 
     <script>
@@ -185,7 +204,6 @@
             document.getElementById('page' + pageNumber).classList.remove('hidden');
             
             if (pageNumber === 2) {
-                // High frequency hearts for page 2
                 heartIntervals.push(setInterval(() => createHeart('rgba(255,77,109,0.7)'), 200));
                 heartIntervals.push(setInterval(() => createHeart('rgba(255,179,193,0.6)'), 400));
             }
@@ -207,7 +225,6 @@
         }
 
         function createBurst() {
-            // Massive confetti burst
             for (let i = 0; i < 120; i++) {
                 const p = document.createElement('div');
                 p.className = 'party-popper';
@@ -274,7 +291,6 @@
         yesBtn.addEventListener('click', () => {
             showPage(3);
             createBurst(); 
-            // Intense celebration hearts and sparkles
             celebrationIntervals.push(setInterval(() => createHeart('#ff4d6d', true), 100));
             celebrationIntervals.push(setInterval(() => createHeart('#ffb3c1', true), 150));
             celebrationIntervals.push(setInterval(() => {
