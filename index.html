@@ -5,163 +5,288 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For My Love ❤️</title>
     <style>
-        :root {
-            --primary-pink: #ff4d6d;
-            --soft-pink: #fff0f3;
-            --dark-pink: #c9184a;
-        }
-
         body {
             margin: 0;
-            padding: 0;
+            height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
             background: linear-gradient(135deg, #ffe5ec 0%, #ffb3c1 100%);
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow: hidden;
-            text-align: center;
+            position: relative;
+            transition: background 0.3s ease;
         }
 
+        /* --- MAD MODE --- */
+        body.mad-mode { background: #9b0000 !important; }
+        body.mad-mode .container { animation: shake 0.1s infinite; background: rgba(255, 255, 255, 0.95); border: 5px solid #000; }
+        body.mad-mode #questionText { 
+            color: #000 !important; 
+            transform: scale(1.3); 
+            font-weight: 900;
+        }
+
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            25% { transform: translate(-3px, -2px) rotate(-1deg); }
+            50% { transform: translate(3px, 2px) rotate(1deg); }
+            75% { transform: translate(-1px, -1px) rotate(-1deg); }
+            100% { transform: translate(1px, 2px) rotate(0deg); }
+        }
+
+        /* --- CONTAINER --- */
         .container {
-            background: rgba(255, 255, 255, 0.6);
-            padding: 2.5rem;
-            border-radius: 30px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-            z-index: 10;
-            max-width: 90%;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 3.5rem 2rem;
+            border-radius: 40px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            max-width: 420px;
+            width: 85%;
+            z-index: 100;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            position: relative;
         }
 
-        h1 {
-            color: var(--dark-pink);
-            font-size: 2.2rem;
-            margin-bottom: 10px;
+        h1 { 
+            color: #d32f2f; 
+            margin: 20px 0; 
+            font-size: 2.2rem; 
+            transition: all 0.3s ease;
+            line-height: 1.2;
         }
 
-        p {
-            color: #555;
-            font-size: 1.2rem;
-            margin-bottom: 30px;
+        p { 
+            font-size: 1.2rem; 
+            color: #555; 
+            margin-bottom: 25px; 
+            line-height: 1.5;
         }
 
-        .buttons {
+        #presentImg { cursor: pointer; transition: transform 0.3s ease; margin-bottom: 10px; }
+        #presentImg:hover { transform: scale(1.1) rotate(5deg); }
+
+        .hidden { display: none !important; }
+
+        .buttons-wrapper {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 20px;
-            height: 80px;
+            margin-top: 15px;
         }
 
         button {
-            padding: 12px 30px;
-            font-size: 1.1rem;
+            padding: 15px 40px;
+            font-size: 1.2rem;
             font-weight: bold;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            transition: transform 0.2s ease;
+            transition: all 0.2s ease;
         }
 
-        #yesBtn {
-            background-color: var(--primary-pink);
-            color: white;
-            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+        #yesBtn { background-color: #ff4d6d; color: white; box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4); }
+        #noBtn { background-color: #eee; color: #777; }
+
+        #countdown {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #d32f2f;
+            font-size: 1.1rem;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 20px;
+            display: inline-block;
+            line-height: 1.4;
         }
 
-        #noBtn {
-            background-color: #ffffff;
-            color: #777;
-            position: fixed; /* Allows it to move anywhere freely */
-            transition: all 0.2s ease-out;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        .back-btn {
+            margin-top: 30px;
+            background: none;
+            color: #bbb;
+            font-size: 0.8rem;
+            text-decoration: underline;
+            padding: 5px;
+            border-radius: 0;
+            font-weight: normal;
         }
 
-        .heart {
-            position: absolute;
-            color: rgba(255, 77, 109, 0.4);
-            pointer-events: none;
-            animation: float 4s linear infinite;
+        /* --- PARTICLES --- */
+        .heart-icon, .mad-emoji, .white-sparkle, .party-popper { 
+            position: absolute; 
+            pointer-events: none; 
+            z-index: 1; 
         }
 
-        @keyframes float {
-            0% { transform: translateY(110vh); opacity: 1; }
-            100% { transform: translateY(-10vh); opacity: 0; }
+        @keyframes floatUp {
+            0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes explode {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container" id="mainContainer">
-        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueGZ3eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/c76IJbxB6cGXq6vDMT/giphy.gif" alt="Cute" width="180">
-        <h1>Hi my lovee</h1>
-        <p>Do you want to be my valentine ?</p>
-        
-        <div class="buttons">
-            <button id="yesBtn">Yes !!</button>
+    <div class="container" id="page1">
+        <img id="presentImg" src="https://cdn-icons-png.flaticon.com/512/6663/6663339.png" width="180">
+        <h1>Hi my love!</h1>
+        <p>I have a little surprise for you.<br>Can you open this present?</p>
+    </div>
+
+    <div class="container hidden" id="page2">
+        <img src="https://i.pinimg.com/originals/a1/b3/b1/a1b3b1492a379333ea53b0f795eaf86f.gif" width="150">
+        <h1 id="questionText">Do you want to be my valentine?</h1>
+        <div class="buttons-wrapper">
+            <button id="yesBtn">Yes</button>
             <button id="noBtn">No</button>
         </div>
+        <button class="back-btn" onclick="showPage(1)">Go back</button>
+    </div>
+
+    <div class="container hidden" id="page3">
+        <img src="https://i.pinimg.com/originals/88/14/9b/88149b0400750578f4d07d9bc3fb0fee.gif" width="180">
+        <h1>Yayyy!!! ❤️</h1>
+        <p>I can't wait for our weekend away. See you soon!</p>
+        <div id="countdown"></div>
+        <br>
+        <button class="back-btn" onclick="showPage(2)">Back</button>
     </div>
 
     <script>
         const noBtn = document.getElementById('noBtn');
         const yesBtn = document.getElementById('yesBtn');
-        const container = document.getElementById('mainContainer');
+        const body = document.body;
+        let celebrationIntervals = [];
+        let heartIntervals = []; 
+        let madModeInterval;
+        let countdownInterval;
 
-        // Initial position for the No button
-        let noX = window.innerWidth / 2 + 50;
-        let noY = window.innerHeight / 2 + 35;
-        noBtn.style.left = noX + 'px';
-        noBtn.style.top = noY + 'px';
+        function clearAllIntervals() {
+            celebrationIntervals.forEach(clearInterval);
+            heartIntervals.forEach(clearInterval);
+            celebrationIntervals = [];
+            heartIntervals = [];
+            clearInterval(madModeInterval);
+            clearInterval(countdownInterval);
+        }
 
-        document.addEventListener('mousemove', (e) => {
-            const mouseX = e.clientX;
-            const mouseY = e.clientY;
+        function showPage(pageNumber) {
+            document.querySelectorAll('.container').forEach(c => c.classList.add('hidden'));
+            clearAllIntervals();
+            body.classList.remove('mad-mode');
+
+            document.getElementById('page' + pageNumber).classList.remove('hidden');
             
-            const btnRect = noBtn.getBoundingClientRect();
-            const btnCenterX = btnRect.left + btnRect.width / 2;
-            const btnCenterY = btnRect.top + btnRect.height / 2;
-
-            const dist = Math.hypot(mouseX - btnCenterX, mouseY - btnCenterY);
-
-            // If the mouse gets within 100 pixels, push the button away
-            if (dist < 100) {
-                const angle = Math.atan2(btnCenterY - mouseY, btnCenterX - mouseX);
-                const pushDist = 150; // How far it "scares" away
-                
-                let newX = btnCenterX + Math.cos(angle) * pushDist;
-                let newY = btnCenterY + Math.sin(angle) * pushDist;
-
-                // Keep within screen bounds
-                newX = Math.max(50, Math.min(window.innerWidth - 100, newX));
-                newY = Math.max(50, Math.min(window.innerHeight - 50, newY));
-
-                noBtn.style.left = `${newX}px`;
-                noBtn.style.top = `${newY}px`;
+            if (pageNumber === 2) {
+                // High frequency hearts for page 2
+                heartIntervals.push(setInterval(() => createHeart('rgba(255,77,109,0.7)'), 200));
+                heartIntervals.push(setInterval(() => createHeart('rgba(255,179,193,0.6)'), 400));
             }
-        });
+            if (pageNumber === 3) {
+                startCountdown();
+            }
+        }
 
-        yesBtn.addEventListener('click', () => {
-            container.innerHTML = `
-                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbm54eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/G96zgIcQn1L2xpmMlr/giphy.gif" width="200">
-                <h1 style="margin-top:20px;">Yess !!</h1>
-                <p>can't wait till our stay at the hotel. See you soon <3</p>
-            `;
-            noBtn.style.display = 'none';
-        });
-
-        // Floating background hearts logic
-        setInterval(() => {
+        function createHeart(color, isCelebration = false) {
             const heart = document.createElement('div');
-            heart.className = 'heart';
-            heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heart.className = 'heart-icon';
+            heart.innerHTML = ['❤️', '💖', '💝', '💕','🌸'][Math.floor(Math.random() * 4)];
+            heart.style.cssText = `left: ${Math.random() * 100}vw; color: ${color};`;
+            heart.style.fontSize = (Math.random() * (isCelebration ? 45 : 30) + 20) + 'px';
+            const d = (Math.random() * 3 + 2);
+            heart.style.animation = `floatUp ${d}s linear forwards`;
             document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 4000);
-        }, 600);
+            setTimeout(() => heart.remove(), d * 1000);
+        }
+
+        function createBurst() {
+            // Massive confetti burst
+            for (let i = 0; i < 120; i++) {
+                const p = document.createElement('div');
+                p.className = 'party-popper';
+                p.innerHTML = ['❤️', '✨', '💖', '🌸', '🍭', '🎉', '🥂'][Math.floor(Math.random() * 7)];
+                p.style.left = '50vw';
+                p.style.top = '50vh';
+                p.style.setProperty('--tx', (Math.random() - 0.5) * 1400 + 'px');
+                p.style.setProperty('--ty', (Math.random() - 0.5) * 1400 + 'px');
+                p.style.fontSize = Math.random() * 35 + 25 + 'px';
+                p.style.animation = `explode 2s ease-out forwards`;
+                document.body.appendChild(p);
+                setTimeout(() => p.remove(), 2000);
+            }
+        }
+
+        function startCountdown() {
+            const targetDate = new Date("February 27, 2026 00:00:00").getTime();
+            const updateTimer = () => {
+                const now = new Date().getTime();
+                const diff = targetDate - now;
+                if (diff <= 0) {
+                    document.getElementById('countdown').innerHTML = "Today is the day! 🏨✨";
+                    return;
+                }
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                document.getElementById('countdown').innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s<br>until our getaway! 🏨`;
+            };
+            updateTimer();
+            countdownInterval = setInterval(updateTimer, 1000);
+        }
+
+        noBtn.addEventListener('mouseover', () => {
+            heartIntervals.forEach(clearInterval);
+            document.querySelectorAll('.heart-icon').forEach(h => h.remove());
+            noBtn.innerHTML = "😡";
+            body.classList.add('mad-mode');
+            yesBtn.style.transform = "scale(1.6)";
+            
+            madModeInterval = setInterval(() => {
+                const e = document.createElement('div');
+                e.className = 'mad-emoji';
+                e.innerHTML = ['😡', '😭'][Math.floor(Math.random() * 2)];
+                e.style.left = Math.random() * 100 + 'vw';
+                const duration = (Math.random() * 2 + 1);
+                e.style.animation = `floatUp ${duration}s linear forwards`;
+                document.body.appendChild(e);
+                setTimeout(() => e.remove(), duration * 1000);
+            }, 100);
+        });
+
+        noBtn.addEventListener('mouseleave', () => {
+            noBtn.innerHTML = "No";
+            body.classList.remove('mad-mode');
+            yesBtn.style.transform = "scale(1)";
+            clearInterval(madModeInterval);
+            heartIntervals.push(setInterval(() => createHeart('rgba(255,77,109,0.7)'), 200));
+        });
+
+        document.getElementById('presentImg').addEventListener('click', () => showPage(2));
+        
+        yesBtn.addEventListener('click', () => {
+            showPage(3);
+            createBurst(); 
+            // Intense celebration hearts and sparkles
+            celebrationIntervals.push(setInterval(() => createHeart('#ff4d6d', true), 100));
+            celebrationIntervals.push(setInterval(() => createHeart('#ffb3c1', true), 150));
+            celebrationIntervals.push(setInterval(() => {
+                const s = document.createElement('div');
+                s.className = 'white-sparkle';
+                s.style.cssText = `position:absolute; color:white; left:${Math.random()*100}vw; top:${Math.random()*100}vh; font-size:30px; z-index:1;`;
+                s.innerHTML = '🌺';
+                document.body.appendChild(s);
+                setTimeout(() => s.remove(), 600);
+            }, 80));
+        });
     </script>
 </body>
 </html>
