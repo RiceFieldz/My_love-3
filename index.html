@@ -145,4 +145,23 @@
 
         yesBtn.addEventListener('click', () => {
             container.innerHTML = `
-                <img src="
+                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbm54eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/G96zgIcQn1L2xpmMlr/giphy.gif" width="200">
+                <h1 style="margin-top:20px;">Yess !!</h1>
+                <p>can't wait till our stay at the hotel. See you soon <3</p>
+            `;
+            noBtn.style.display = 'none';
+        });
+
+        // Floating background hearts logic
+        setInterval(() => {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 4000);
+        }, 600);
+    </script>
+</body>
+</html>
